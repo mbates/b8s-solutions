@@ -1,3 +1,8 @@
+// API Configuration
+export const apiConfig = {
+  contactEndpoint: process.env.NEXT_PUBLIC_CONTACT_API_URL || 'https://6u0pto5yr2.execute-api.eu-west-2.amazonaws.com/contact',
+}
+
 export const siteConfig = {
   name: 'Bates Groundworks',
   tagline: 'Landscaping & Construction',

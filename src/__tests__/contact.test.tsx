@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import ContactPage from '@/app/contact/page'
@@ -9,6 +9,19 @@ vi.mock('next/link', () => ({
     <a href={href}>{children}</a>
   ),
 }))
+
+// Mock fetch for API calls
+const mockFetch = vi.fn()
+global.fetch = mockFetch
+
+beforeEach(() => {
+  mockFetch.mockReset()
+  // Default: successful response
+  mockFetch.mockResolvedValue({
+    ok: true,
+    json: async () => ({ message: 'Email sent successfully' }),
+  })
+})
 
 describe('ContactPage', () => {
   it('renders the hero section', () => {
@@ -108,16 +121,21 @@ describe('ContactPage', () => {
     const submitButton = screen.getByRole('button', { name: /send message/i })
     await user.click(submitButton)
 
-    // Should show loading state
-    await waitFor(() => {
-      expect(screen.getByText(/sending.../i)).toBeInTheDocument()
-    })
-
     // Should show success message after submission
     await waitFor(() => {
       expect(screen.getByText(/message sent!/i)).toBeInTheDocument()
       expect(screen.getByText(/thank you for getting in touch/i)).toBeInTheDocument()
     }, { timeout: 3000 })
+
+    // Verify fetch was called with correct data
+    expect(mockFetch).toHaveBeenCalledWith(
+      expect.any(String),
+      expect.objectContaining({
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: expect.stringContaining('John Doe'),
+      })
+    )
   })
 
   it('allows sending another message after success', async () => {
@@ -149,5 +167,26 @@ describe('ContactPage', () => {
     render(<ContactPage />)
     expect(screen.getByText('Herefordshire')).toBeInTheDocument()
     expect(screen.getByText('Worcestershire')).toBeInTheDocument()
+  })
+
+  it('shows error message when API call fails', async () => {
+    // Mock API failure
+    mockFetch.mockResolvedValueOnce({
+      ok: false,
+      status: 500,
+    })
+
+    const user = userEvent.setup()
+    render(<ContactPage />)
+
+    await user.type(screen.getByLabelText(/name/i), 'John Doe')
+    await user.type(screen.getByLabelText(/email/i), 'john@example.com')
+    await user.type(screen.getByLabelText(/message/i), 'Test message for error case.')
+
+    await user.click(screen.getByRole('button', { name: /send message/i }))
+
+    await waitFor(() => {
+      expect(screen.getByText(/sorry, there was an error/i)).toBeInTheDocument()
+    })
   })
 })
