@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Cinzel, Cinzel_Decorative, Philosopher } from 'next/font/google'
+import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
 import './globals.css'
 
@@ -34,6 +35,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${cinzel.variable} ${cinzelDecorative.variable} ${philosopher.variable} font-body`}>
+        <Header />
         <main>{children}</main>
         <Footer />
       </body>
