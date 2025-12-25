@@ -9,7 +9,7 @@
 
 # IAM User for CI/CD deployments
 resource "aws_iam_user" "cicd" {
-  name = "robbie"
+  name = "robbie-cicd"
   path = "/system/"
 
   tags = {
@@ -19,7 +19,7 @@ resource "aws_iam_user" "cicd" {
 
 # IAM Policy for S3 and CloudFront (static site deployment)
 resource "aws_iam_user_policy" "cicd_deploy" {
-  name = "${var.app_name}-cicd-deploy"
+  name = "robbie-deploy-policy"
   user = aws_iam_user.cicd.name
 
   policy = jsonencode({
