@@ -2,6 +2,7 @@
 
 import { useState, useRef, useCallback, useEffect } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 interface BrickLogoProps {
   /** Scale multiplier - 1 is base size, 2 is double, 0.5 is half, etc. */
@@ -58,6 +59,7 @@ export function BrickLogo({
   animated = false,
   className = '',
 }: BrickLogoProps) {
+  const pathname = usePathname();
   const [brickTransforms, setBrickTransforms] = useState<
     Record<number, BrickTransform>
   >({});
@@ -236,11 +238,17 @@ export function BrickLogo({
     const stagger = brickStaggerOffsets[index] || 0;
     const animationDelay = `${row * ROW_DELAY + stagger}s`;
     const nav = navLinks[navIndex];
+    const isActive = pathname === nav.href || pathname?.startsWith(nav.href + '/');
 
     let stateClass = 'animate-brick-drop';
     if (animationComplete) {
       stateClass = '';
     }
+
+    // Active brick is navy blue, others are orange
+    const bgClass = isActive
+      ? 'bg-bates-navy hover:bg-blue-800'
+      : 'bg-bates-orange hover:bg-bates-orange-light';
 
     return (
       <div
@@ -252,7 +260,7 @@ export function BrickLogo({
       >
         <Link
           href={nav.href}
-          className={`bg-bates-orange hover:bg-bates-orange-light cursor-pointer flex items-center justify-center transition-transform duration-300 ease-out ${stateClass}`}
+          className={`${bgClass} cursor-pointer flex items-center justify-center transition-all duration-300 ease-out ${stateClass}`}
           style={{
             ...brickStyle,
             transform: animationComplete ? getTransform(index) : undefined,
