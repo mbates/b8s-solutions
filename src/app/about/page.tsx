@@ -5,7 +5,7 @@ import { CallToAction } from '@/components/sections/CallToAction'
 
 export const metadata: Metadata = {
   title: `About Us | ${siteConfig.name}`,
-  description: 'Learn about Bates Groundworks - your trusted local landscaping and building experts serving Surrey and Hampshire.',
+  description: 'Learn about Bates Groundworks - your trusted local landscaping and building experts serving Herefordshire, Worcestershire, and Gloucestershire.',
 }
 
 const valueIcons: Record<string, React.ReactNode> = {
@@ -44,7 +44,7 @@ export default function AboutPage() {
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Professional landscaping and building services you can trust.
-            Serving Surrey and Hampshire with pride.
+            Based in Hereford, serving the three counties and Welsh borders.
           </p>
         </div>
       </section>
@@ -179,7 +179,7 @@ export default function AboutPage() {
                 Areas We Serve
               </h2>
               <p className="text-gray-600 mb-4">
-                We proudly serve customers across Surrey and Hampshire, including:
+                Based in Hereford, we serve customers across:
               </p>
               <div className="flex flex-wrap gap-2">
                 {about.serviceAreas.map((area) => (
