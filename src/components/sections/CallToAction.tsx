@@ -11,7 +11,7 @@ export function CallToAction() {
         <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
           {siteConfig.cta}. Whether it&apos;s a small repair or a complete garden makeover, we&apos;re here to help.
         </p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
           <Link
             href="/contact"
             className="btn bg-white text-b8s-orange hover:bg-gray-100 px-8 py-3 text-lg font-semibold"

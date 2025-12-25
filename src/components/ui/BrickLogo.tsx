@@ -22,17 +22,17 @@ const navLinks = [
 ];
 
 const sizes = {
-  sm: { brick: 'w-6 h-2', gap: 'gap-0.5', rounded: 'rounded-sm', tool: 'h-[3.5rem]', text: 'text-[6px]', title: 'text-lg' },
-  md: { brick: 'w-10 h-3', gap: 'gap-1', rounded: 'rounded', tool: 'h-[6rem]', text: 'text-[8px]', title: 'text-2xl' },
-  lg: { brick: 'w-14 h-4', gap: 'gap-1', rounded: 'rounded', tool: 'h-[8rem]', text: 'text-[10px]', title: 'text-3xl' },
-  xl: { brick: 'w-16 h-5', gap: 'gap-1.5', rounded: 'rounded-md', tool: 'h-[10rem]', text: 'text-xs', title: 'text-4xl' },
-  hero: { brick: 'w-20 h-6', gap: 'gap-2', rounded: 'rounded-md', tool: 'h-[12rem]', text: 'text-sm', title: 'text-5xl md:text-7xl' },
+  sm: { brick: 'w-9 h-3', gap: 'gap-1', rounded: 'rounded-sm', tool: 'h-[5rem]', text: 'text-[9px]', title: 'text-xl' },
+  md: { brick: 'w-[3.75rem] h-[1.125rem]', gap: 'gap-1.5', rounded: 'rounded', tool: 'h-[9rem]', text: 'text-[12px]', title: 'text-3xl' },
+  lg: { brick: 'w-[5.25rem] h-6', gap: 'gap-1.5', rounded: 'rounded', tool: 'h-[12rem]', text: 'text-[15px]', title: 'text-4xl' },
+  xl: { brick: 'w-24 h-[1.875rem]', gap: 'gap-2', rounded: 'rounded-md', tool: 'h-[15rem]', text: 'text-base', title: 'text-5xl' },
+  hero: { brick: 'w-[7.5rem] h-9', gap: 'gap-3', rounded: 'rounded-md', tool: 'h-[18rem]', text: 'text-lg', title: 'text-6xl md:text-8xl' },
 };
 
 // Hover movement intensity
-const MOVE_DISTANCE = 9;
-const ROTATE_AMOUNT = 6;
-const EFFECT_RADIUS = 80; // pixels - how far the mouse effect reaches
+const MOVE_DISTANCE = 12;
+const ROTATE_AMOUNT = 8;
+const EFFECT_RADIUS = 120; // pixels - how far the mouse effect reaches
 
 // Loading animation timing - Matrix-style cascade
 const ROW_DELAY = 0.35; // seconds between each row
