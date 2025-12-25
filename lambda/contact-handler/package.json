@@ -1,0 +1,22 @@
+{
+  "name": "contact-handler",
+  "version": "1.0.0",
+  "description": "Lambda function to handle contact form submissions",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "clean": "rm -rf dist",
+    "package": "npm run clean && npm run build && cd dist && zip -r ../function.zip ."
+  },
+  "dependencies": {
+    "@aws-sdk/client-ses": "^3.693.0"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.145",
+    "@types/node": "^20.17.9",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  }
+}
