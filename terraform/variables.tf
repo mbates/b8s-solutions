@@ -27,3 +27,9 @@ variable "hosted_zone_name" {
   type        = string
   default     = "bates-solutions.com"
 }
+
+variable "contact_email" {
+  description = "Email address to receive contact form submissions"
+  type        = string
+  default     = "b8ssolutions@gmail.com"
+}

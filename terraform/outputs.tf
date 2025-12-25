@@ -17,3 +17,14 @@ output "website_url" {
   description = "Website URL"
   value       = "https://${var.domain_name}"
 }
+
+# SES Outputs
+output "ses_domain_identity_arn" {
+  description = "SES domain identity ARN for IAM policies"
+  value       = aws_ses_domain_identity.main.arn
+}
+
+output "ses_domain_verified" {
+  description = "Whether SES domain is verified"
+  value       = aws_ses_domain_identity_verification.main.id != "" ? "true" : "pending"
+}
