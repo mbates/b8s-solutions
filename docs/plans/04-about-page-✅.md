@@ -1,6 +1,6 @@
-# 🚧 About Page Plan
+# ✅ About Page Plan
 
-**Status: IN PROGRESS**
+**Status: COMPLETED**
 
 ## Objective
 Create an about page that builds trust and showcases the people behind Bates Groundworks.
