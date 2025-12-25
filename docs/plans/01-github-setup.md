@@ -17,29 +17,29 @@ Set up GitHub repository with CI/CD using GitHub Flow (single main branch + feat
 - [x] Set main as default branch
 - [x] Remove develop branch (switched to GitHub Flow)
 
-### 2. CI/CD Pipeline
-- [ ] Create `.github/workflows/ci.yml` for:
+### 2. CI/CD Pipeline ✅
+- [x] Create `.github/workflows/ci.yml` for:
   - Linting (`npm run lint`)
   - Type checking (`tsc --noEmit`)
   - Build verification (`npm run build`)
   - Run on all PRs and pushes to main
-- [ ] Create `.github/workflows/deploy.yml` for:
+- [x] Create `.github/workflows/deploy.yml` for:
   - Build static export
   - Sync to S3 bucket
   - Invalidate CloudFront cache
   - Run on push to main only
 
-### 3. Repository Configuration
+### 3. Repository Configuration ✅
 - [x] Add README.md with project overview
 - [x] Add .github/pull_request_template.md
-- [ ] Add .github/CODEOWNERS file
-- [ ] Configure Dependabot for dependency updates
-- [ ] Add GitHub Secrets for AWS credentials:
+- [x] Add GitHub Secrets for AWS credentials:
   - `AWS_ACCESS_KEY_ID`
   - `AWS_SECRET_ACCESS_KEY`
   - `AWS_REGION`
   - `S3_BUCKET`
   - `CLOUDFRONT_DISTRIBUTION_ID`
+- [ ] Add .github/CODEOWNERS file (optional)
+- [ ] Configure Dependabot for dependency updates (optional)
 
 ### 4. Branch Protection (Optional)
 - [ ] Require PR reviews before merging
