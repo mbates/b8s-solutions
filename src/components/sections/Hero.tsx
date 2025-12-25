@@ -12,7 +12,7 @@ export function Hero() {
 
         {/* Main Logo - The Focus */}
         <div className="mb-6">
-          <BrickLogo size="hero" showTools={true} animated={true} />
+          <BrickLogo size="hero" showTools={true} showNavLinks={true} animated={true} />
         </div>
 
         {/* Tagline */}

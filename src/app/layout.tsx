@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 import { Fredoka, Open_Sans } from 'next/font/google'
-import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
 import './globals.css'
 
@@ -27,7 +26,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${fredoka.variable} ${openSans.variable} font-body`}>
-        <Header />
         <main>{children}</main>
         <Footer />
       </body>
