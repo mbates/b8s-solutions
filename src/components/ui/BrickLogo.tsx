@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import Image from 'next/image';
 
 interface BrickLogoProps {
@@ -18,10 +18,23 @@ const sizes = {
   hero: { brick: 'w-20 h-6', gap: 'gap-2', rounded: 'rounded-md', tool: 'h-[5.5rem]' },
 };
 
-// Movement intensity
+// Hover movement intensity
 const MOVE_DISTANCE = 9;
 const ROTATE_AMOUNT = 6;
 const EFFECT_RADIUS = 80; // pixels - how far the mouse effect reaches
+
+// Loading animation timing - Matrix-style cascade
+const ROW_DELAY = 0.35; // seconds between each row
+
+// Pre-computed stagger offsets for each brick - more spread out like Matrix rain
+const brickStaggerOffsets = [
+  // Row 1 (5 bricks)
+  0.0, 0.12, 0.05, 0.18, 0.08,
+  // Row 2 (4 bricks)
+  0.1, 0.0, 0.15, 0.06,
+  // Row 3 (5 bricks)
+  0.04, 0.14, 0.0, 0.1, 0.2,
+];
 
 interface BrickTransform {
   x: number;
@@ -37,7 +50,26 @@ export function BrickLogo({
 }: BrickLogoProps) {
   const s = sizes[size];
   const [brickTransforms, setBrickTransforms] = useState<Record<number, BrickTransform>>({});
+  const [hasLoaded, setHasLoaded] = useState(false);
+  const [animationComplete, setAnimationComplete] = useState(false);
   const brickRefs = useRef<Record<number, HTMLDivElement | null>>({});
+
+  // Trigger loading animation on mount
+  useEffect(() => {
+    // Small delay to ensure CSS is ready
+    const timer = setTimeout(() => setHasLoaded(true), 50);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Mark animation complete after all bricks have dropped
+  useEffect(() => {
+    if (!hasLoaded) return;
+    // Calculate max animation time: last row delay + max stagger + animation duration
+    const maxDelay = 2 * ROW_DELAY + Math.max(...brickStaggerOffsets);
+    const animationDuration = 0.8; // matches tailwind config
+    const timer = setTimeout(() => setAnimationComplete(true), (maxDelay + animationDuration) * 1000 + 100);
+    return () => clearTimeout(timer);
+  }, [hasLoaded]);
 
   const brickClass = `${s.brick} bg-b8s-orange ${s.rounded} transition-transform duration-300 ease-out`;
 
@@ -87,19 +119,42 @@ export function BrickLogo({
     return `translate(${transform.x}px, ${transform.y}px) rotate(${transform.rotate}deg)`;
   };
 
-  const renderBrick = (index: number, keyPrefix: string) => (
-    <div
-      key={`${keyPrefix}-${index}`}
-      className="relative"
-      ref={(el) => { brickRefs.current[index] = el; }}
-    >
-      {/* Visible brick */}
+  // Get the row number for a brick index (reversed - bottom first)
+  const getRowForBrick = (index: number) => {
+    if (index < 5) return 2;  // Top row drops last
+    if (index < 9) return 1;  // Middle row drops second
+    return 0;                  // Bottom row drops first
+  };
+
+  const renderBrick = (index: number, keyPrefix: string) => {
+    const row = getRowForBrick(index);
+    const stagger = brickStaggerOffsets[index] || 0;
+    const animationDelay = `${row * ROW_DELAY + stagger}s`;
+
+    // Determine brick state classes
+    let stateClass = 'animate-brick-drop'; // Always use animation class
+    if (animationComplete) {
+      stateClass = ''; // Remove animation class once complete for hover to work
+    }
+
+    return (
       <div
-        className={brickClass}
-        style={{ transform: getTransform(index) }}
-      />
-    </div>
-  );
+        key={`${keyPrefix}-${index}`}
+        className="relative"
+        ref={(el) => { brickRefs.current[index] = el; }}
+      >
+        {/* Visible brick */}
+        <div
+          className={`${brickClass} ${stateClass}`}
+          style={{
+            transform: animationComplete ? getTransform(index) : undefined,
+            animationDelay: !animationComplete ? animationDelay : undefined,
+            animationPlayState: hasLoaded ? 'running' : 'paused',
+          }}
+        />
+      </div>
+    );
+  };
 
   const bricks = (
     <div

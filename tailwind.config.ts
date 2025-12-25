@@ -18,6 +18,41 @@ const config: Config = {
         'heading': ['Fredoka', 'sans-serif'],
         'body': ['Open Sans', 'sans-serif'],
       },
+      keyframes: {
+        'brick-drop': {
+          '0%': {
+            transform: 'translateY(-100vh)',
+            opacity: '1',
+          },
+          '1%': {
+            opacity: '1',
+          },
+          '60%': {
+            transform: 'translateY(0)',
+          },
+          '72%': {
+            transform: 'translateY(-12px)',
+          },
+          '82%': {
+            transform: 'translateY(0)',
+          },
+          '88%': {
+            transform: 'translateY(-4px)',
+          },
+          '94%': {
+            transform: 'translateY(0)',
+          },
+          '97%': {
+            transform: 'translateY(-1px)',
+          },
+          '100%': {
+            transform: 'translateY(0)',
+          },
+        },
+      },
+      animation: {
+        'brick-drop': 'brick-drop 0.8s cubic-bezier(0.22, 0.61, 0.36, 1) both',
+      },
     },
   },
   plugins: [
