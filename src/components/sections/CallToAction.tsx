@@ -3,7 +3,7 @@ import { siteConfig } from '@/lib/constants'
 
 export function CallToAction() {
   return (
-    <section className="py-16 md:py-24 bg-b8s-brick">
+    <section className="py-16 md:py-24 bg-b8s-orange">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <h2 className="font-heading text-3xl md:text-4xl font-bold text-white mb-4">
           Ready to Transform Your Space?
@@ -14,7 +14,7 @@ export function CallToAction() {
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link
             href="/contact"
-            className="btn bg-white text-b8s-brick hover:bg-gray-100 px-8 py-3 text-lg font-semibold"
+            className="btn bg-white text-b8s-orange hover:bg-gray-100 px-8 py-3 text-lg font-semibold"
           >
             Contact Us
           </Link>

@@ -1,22 +1,22 @@
 import type { Metadata } from 'next'
-import { Inter, Oswald } from 'next/font/google'
+import { Fredoka, Open_Sans } from 'next/font/google'
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
 import './globals.css'
 
-const inter = Inter({
+const fredoka = Fredoka({
   subsets: ['latin'],
-  variable: '--font-inter',
+  variable: '--font-fredoka',
 })
 
-const oswald = Oswald({
+const openSans = Open_Sans({
   subsets: ['latin'],
-  variable: '--font-oswald',
+  variable: '--font-opensans',
 })
 
 export const metadata: Metadata = {
   title: 'B8S Solutions - Home & Garden Services',
-  description: 'Professional landscape gardening, garden maintenance, and general building services. Small jobs, Big jobs! Get in touch for a free quote.',
+  description: 'Local landscape gardening, garden maintenance, and general building services. Small jobs, Big jobs! Get in touch for a free quote.',
 }
 
 export default function RootLayout({
@@ -26,9 +26,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} ${oswald.variable} font-body`}>
+      <body className={`${fredoka.variable} ${openSans.variable} font-body`}>
         <Header />
-        <main className="min-h-screen">{children}</main>
+        <main>{children}</main>
         <Footer />
       </body>
     </html>

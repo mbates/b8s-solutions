@@ -18,16 +18,23 @@ export function Header() {
               <svg className="w-6 h-6 text-b8s-navy" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M15.1 1.81l-2.83 2.83c-.77.78-.77 2.05 0 2.83l1.41 1.41-4.24 4.24-1.41-1.41c-.78-.78-2.05-.78-2.83 0L2.37 14.54c-1.56 1.56-1.56 4.09 0 5.66 1.56 1.56 4.09 1.56 5.66 0l2.83-2.83c.78-.78.78-2.05 0-2.83l-1.41-1.41 4.24-4.24 1.41 1.41c.78.78 2.05.78 2.83 0l2.83-2.83c.78-.78.78-2.05 0-2.83l-2.83-2.83c-.78-.78-2.05-.78-2.83 0z"/>
               </svg>
-              {/* Brick wall */}
+              {/* Brick wall - matches business card layout */}
               <div className="mx-1 flex flex-col gap-0.5">
                 <div className="flex gap-0.5">
-                  <div className="w-3 h-1.5 bg-b8s-brick rounded-sm"></div>
-                  <div className="w-3 h-1.5 bg-b8s-brick rounded-sm"></div>
+                  <div className="w-4 h-2 bg-b8s-orange rounded-sm"></div>
+                  <div className="w-4 h-2 bg-b8s-orange rounded-sm"></div>
+                  <div className="w-4 h-2 bg-b8s-orange rounded-sm"></div>
                 </div>
                 <div className="flex gap-0.5">
-                  <div className="w-2 h-1.5 bg-b8s-brick rounded-sm"></div>
-                  <div className="w-3 h-1.5 bg-b8s-brick rounded-sm"></div>
-                  <div className="w-2 h-1.5 bg-b8s-brick rounded-sm"></div>
+                  <div className="w-2 h-2 bg-b8s-orange rounded-sm"></div>
+                  <div className="w-4 h-2 bg-b8s-orange rounded-sm"></div>
+                  <div className="w-4 h-2 bg-b8s-orange rounded-sm"></div>
+                  <div className="w-2 h-2 bg-b8s-orange rounded-sm"></div>
+                </div>
+                <div className="flex gap-0.5">
+                  <div className="w-4 h-2 bg-b8s-orange rounded-sm"></div>
+                  <div className="w-4 h-2 bg-b8s-orange rounded-sm"></div>
+                  <div className="w-4 h-2 bg-b8s-orange rounded-sm"></div>
                 </div>
               </div>
               {/* Fork icon */}
@@ -37,7 +44,7 @@ export function Header() {
             </div>
             <div className="flex flex-col">
               <span className="font-heading font-bold text-xl text-b8s-navy leading-tight">B8S Solutions</span>
-              <span className="text-xs text-b8s-brick font-medium">Home & Garden Services</span>
+              <span className="text-xs text-b8s-orange font-medium">Home & Garden Services</span>
             </div>
           </Link>
 
@@ -54,7 +61,7 @@ export function Header() {
             ))}
             <Link
               href="/contact"
-              className="btn bg-b8s-brick hover:bg-b8s-brick-light text-white px-6"
+              className="btn bg-b8s-orange hover:bg-b8s-orange-light text-white px-6"
             >
               Free Quote
             </Link>
@@ -92,7 +99,7 @@ export function Header() {
               ))}
               <Link
                 href="/contact"
-                className="btn bg-b8s-brick hover:bg-b8s-brick-light text-white w-full text-center"
+                className="btn bg-b8s-orange hover:bg-b8s-orange-light text-white w-full text-center"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Free Quote

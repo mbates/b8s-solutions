@@ -12,7 +12,7 @@ export function Footer() {
               <span className="font-heading font-bold text-2xl">B8S Solutions</span>
             </div>
             <p className="text-gray-300 mb-4">{siteConfig.tagline}</p>
-            <p className="text-b8s-brick-light font-semibold">{siteConfig.cta}</p>
+            <p className="text-b8s-orange-light font-semibold">{siteConfig.cta}</p>
           </div>
 
           {/* Quick Links */}
