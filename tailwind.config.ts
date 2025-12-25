@@ -8,7 +8,17 @@ const config: Config = {
     './node_modules/flyonui/dist/js/*.js',
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        'b8s-navy': '#1a237e',
+        'b8s-brick': '#b71c1c',
+        'b8s-brick-light': '#d32f2f',
+      },
+      fontFamily: {
+        'heading': ['Oswald', 'sans-serif'],
+        'body': ['Inter', 'sans-serif'],
+      },
+    },
   },
   plugins: [
     require('flyonui'),
