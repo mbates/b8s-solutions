@@ -147,7 +147,7 @@ describe('ContactPage', () => {
 
   it('renders service area tags', () => {
     render(<ContactPage />)
-    expect(screen.getByText('Surrey')).toBeInTheDocument()
-    expect(screen.getByText('Hampshire')).toBeInTheDocument()
+    expect(screen.getByText('Herefordshire')).toBeInTheDocument()
+    expect(screen.getByText('Worcestershire')).toBeInTheDocument()
   })
 })

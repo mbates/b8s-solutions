@@ -17,7 +17,11 @@
       "Bash(gh run list:*)",
       "Bash(gh run view:*)",
       "Bash(npm run lint)",
-      "Bash(npx eslint:*)"
+      "Bash(npx eslint:*)",
+      "Bash(terraform fmt:*)",
+      "Bash(terraform validate:*)",
+      "Bash(powershell:*)",
+      "Bash(gh run watch:*)"
     ]
   }
 }
