@@ -17,3 +17,14 @@ output "website_url" {
   description = "Website URL"
   value       = "https://${var.domain_name}"
 }
+
+# Lambda Outputs
+output "contact_lambda_arn" {
+  description = "Contact handler Lambda ARN"
+  value       = aws_lambda_function.contact_handler.arn
+}
+
+output "contact_lambda_name" {
+  description = "Contact handler Lambda function name"
+  value       = aws_lambda_function.contact_handler.function_name
+}
