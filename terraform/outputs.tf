@@ -45,3 +45,14 @@ output "cicd_secret_access_key" {
   value       = aws_iam_access_key.cicd.secret
   sensitive   = true
 }
+
+# API Gateway Outputs
+output "api_gateway_url" {
+  description = "API Gateway endpoint URL for contact form"
+  value       = aws_apigatewayv2_api.contact.api_endpoint
+}
+
+output "contact_api_endpoint" {
+  description = "Full contact form API endpoint"
+  value       = "${aws_apigatewayv2_api.contact.api_endpoint}/contact"
+}
