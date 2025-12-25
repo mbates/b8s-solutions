@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { siteConfig } from '@/lib/constants'
+import { siteConfig, apiConfig } from '@/lib/constants'
 import { CallToAction } from '@/components/sections/CallToAction'
 
 type FormStatus = 'idle' | 'submitting' | 'success' | 'error'
@@ -104,12 +104,30 @@ export default function ContactPage() {
 
     setStatus('submitting')
 
-    // TODO: Connect to real API in PR 5
-    // For now, simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500))
+    try {
+      const response = await fetch(apiConfig.contactEndpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone || undefined,
+          service: formData.service || undefined,
+          message: formData.message,
+        }),
+      })
 
-    // Simulate success (in real implementation, this would be an API call)
-    setStatus('success')
+      if (!response.ok) {
+        throw new Error('Failed to send message')
+      }
+
+      setStatus('success')
+    } catch (error) {
+      console.error('Contact form error:', error)
+      setStatus('error')
+    }
   }
 
   const resetForm = () => {
