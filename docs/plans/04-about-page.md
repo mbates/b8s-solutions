@@ -1,82 +1,40 @@
-# 📋 About Page Plan
+# 🚧 About Page Plan
 
-**Status: PLANNED**
+**Status: IN PROGRESS**
 
 ## Objective
 Create an about page that builds trust and showcases the people behind Bates Groundworks.
 
-## Page Sections
+## Completed
 
-### 1. Company Story
-- Brief history of Bates Groundworks
-- How the business started
-- Mission and values
-- What sets us apart
+- [x] Create `/src/app/about/page.tsx`
+- [x] Hero section with intro
+- [x] Company story section with placeholder photo
+- [x] Values grid (Quality, Reliability, Communication, Customer Focus)
+- [x] Meet the Team section with founder profile
+- [x] Credentials section (insurance, waste carrier licence, etc.)
+- [x] Service areas list (Surrey, Hampshire, specific towns)
+- [x] Quick contact section with phone CTA
+- [x] Reuse CallToAction component
+- [x] Add about content to siteConfig
+- [x] SEO meta tags
+- [x] Responsive design
 
-### 2. Meet the Team
-- Owner/founder profile with photo
-- Key team members (if applicable)
-- Qualifications and experience
+## Pending
 
-### 3. Our Values
-- Quality workmanship
-- Reliability and punctuality
-- Clear communication
-- Customer satisfaction
-- Environmental responsibility
+- [ ] Add real team photos to `/public/team/`
+- [ ] Optional: Google Maps embed for service area
+- [ ] Optional: Customer testimonials
+- [ ] Optional: Years in business / projects completed counters
 
-### 4. Accreditations & Insurance
-- Public liability insurance
-- Any trade accreditations
-- Certifications (if any)
+## Files Created/Modified
 
-### 5. Service Area
-- Map showing coverage area
-- List of areas served
-- Travel policy
-
-### 6. Call to Action
-- Reuse existing CallToAction component
-
-## Page Structure
-
-```
-/src/app/about/page.tsx
-/src/components/sections/
-  TeamMember.tsx
-  ValueCard.tsx
-  ServiceAreaMap.tsx (optional)
-```
-
-## Technical Tasks
-
-- [ ] Create `/src/app/about/page.tsx`
-- [ ] Create team member component
-- [ ] Create values grid component
-- [ ] Add team photos to `/public/team/`
-- [ ] Optional: Integrate Google Maps for service area
-- [ ] Add meta tags for SEO
-
-## Content Needed
-
-- [ ] Company story/history text
-- [ ] Owner bio and photo
-- [ ] Team member photos (if applicable)
-- [ ] List of qualifications/certifications
-- [ ] Service area details
-- [ ] Insurance/accreditation logos
+- `src/app/about/page.tsx` - About page with all sections
+- `src/lib/constants.ts` - Added `about` config with story, values, service areas, credentials
 
 ## Design Notes
 
-- Professional but approachable tone
-- Use real photos where possible
-- Include social proof elements
-- Keep text concise and scannable
-- Mobile-first design
-
-## Optional Enhancements
-
-- Customer testimonials carousel
-- Years in business counter
-- Projects completed counter
-- Google Maps embed for service area
+- All sections inline in page (no separate components needed for MVP)
+- Using gradient placeholders for photos
+- Values use inline SVG icons matching site style
+- Mobile-first responsive design
