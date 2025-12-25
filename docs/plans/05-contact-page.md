@@ -1,4 +1,6 @@
-# Contact Page Plan
+# 📋 Contact Page Plan
+
+**Status: PLANNED**
 
 ## Objective
 Create a contact page with a working contact form that sends emails via AWS SES.

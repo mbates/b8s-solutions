@@ -1,4 +1,6 @@
-# Testing Setup with Vitest
+# 📋 Testing Setup with Vitest
+
+**Status: PLANNED**
 
 ## Objective
 Set up a comprehensive testing framework using Vitest for unit tests and component tests.

@@ -1,4 +1,6 @@
-# Projects Page Plan
+# 📋 Projects Page Plan
+
+**Status: PLANNED**
 
 ## Objective
 Create a portfolio/gallery page showcasing completed projects with images sourced from Google Drive.

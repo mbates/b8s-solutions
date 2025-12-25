@@ -1,4 +1,6 @@
-# Update Service Icons Plan
+# 📋 Update Service Icons Plan
+
+**Status: PLANNED**
 
 ## Objective
 Create and update icons for Landscape Gardening and Garden Maintenance services to improve visual consistency and branding.
