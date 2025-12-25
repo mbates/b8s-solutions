@@ -21,7 +21,9 @@
       "Bash(terraform fmt:*)",
       "Bash(terraform validate:*)",
       "Bash(powershell:*)",
-      "Bash(gh run watch:*)"
+      "Bash(gh run watch:*)",
+      "Bash(terraform plan:*)",
+      "Bash(terraform apply:*)"
     ]
   }
 }

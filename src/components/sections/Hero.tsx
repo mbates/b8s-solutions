@@ -1,20 +1,9 @@
 import Link from 'next/link'
-import { BrickLogo } from '@/components/ui/BrickLogo'
 
 export function Hero() {
   return (
-    <section className="bg-white py-4 md:py-8">
+    <section className="bg-white py-8 md:py-12">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        {/* Main Logo with Title */}
-        <div className="mb-6">
-          <BrickLogo scale={1.5} showTools={true} showNavLinks={true} showTitle={true} animated={true} />
-        </div>
-
-        {/* Tagline */}
-        <p className="font-heading text-5xl text-bates-navy mb-6">
-          Landscaping & Construction
-        </p>
-
         {/* Services List */}
         <p className="text-lg text-gray-600 mb-2">
           Landscape gardening • Garden maintenance • General building
