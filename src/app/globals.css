@@ -5,14 +5,18 @@
 @layer base {
   body {
     @apply text-gray-800 antialiased;
-    font-family: var(--font-opensans), 'Open Sans', sans-serif;
+    font-family: var(--font-philosopher), 'Philosopher', sans-serif;
   }
 }
 
 .font-heading {
-  font-family: var(--font-fredoka), 'Fredoka', sans-serif;
+  font-family: var(--font-cinzel), 'Cinzel', serif;
+}
+
+.font-logo {
+  font-family: var(--font-cinzel-decorative), 'Cinzel Decorative', serif;
 }
 
 .font-body {
-  font-family: var(--font-opensans), 'Open Sans', sans-serif;
+  font-family: var(--font-philosopher), 'Philosopher', sans-serif;
 }

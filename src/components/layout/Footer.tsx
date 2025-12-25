@@ -3,16 +3,16 @@ import { siteConfig } from '@/lib/constants'
 
 export function Footer() {
   return (
-    <footer className="bg-b8s-navy text-white">
+    <footer className="bg-bates-navy text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Company Info */}
           <div className="md:col-span-2">
             <div className="flex items-center gap-2 mb-4">
-              <span className="font-heading font-bold text-2xl">B8S Solutions</span>
+              <span className="font-heading font-bold text-2xl">Bates Groundworks</span>
             </div>
             <p className="text-gray-300 mb-4">{siteConfig.tagline}</p>
-            <p className="text-b8s-orange-light font-semibold">{siteConfig.cta}</p>
+            <p className="text-bates-orange-light font-semibold">{siteConfig.cta}</p>
           </div>
 
           {/* Quick Links */}
@@ -61,7 +61,7 @@ export function Footer() {
 
         {/* Bottom Bar */}
         <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400 text-sm">
-          <p>&copy; {new Date().getFullYear()} B8S Solutions. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Bates Groundworks. All rights reserved.</p>
           <p className="mt-2">Small jobs, Big jobs!</p>
         </div>
       </div>

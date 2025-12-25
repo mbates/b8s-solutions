@@ -1,20 +1,28 @@
 import type { Metadata } from 'next'
-import { Fredoka, Open_Sans } from 'next/font/google'
+import { Cinzel, Cinzel_Decorative, Philosopher } from 'next/font/google'
 import { Footer } from '@/components/layout/Footer'
 import './globals.css'
 
-const fredoka = Fredoka({
+const cinzel = Cinzel({
   subsets: ['latin'],
-  variable: '--font-fredoka',
+  weight: ['400', '500', '600', '700', '800', '900'],
+  variable: '--font-cinzel',
 })
 
-const openSans = Open_Sans({
+const cinzelDecorative = Cinzel_Decorative({
   subsets: ['latin'],
-  variable: '--font-opensans',
+  weight: ['400', '700', '900'],
+  variable: '--font-cinzel-decorative',
+})
+
+const philosopher = Philosopher({
+  subsets: ['latin'],
+  weight: ['400', '700'],
+  variable: '--font-philosopher',
 })
 
 export const metadata: Metadata = {
-  title: 'B8S Solutions - Home & Garden Services',
+  title: 'Bates Groundworks - Landscaping & Construction',
   description: 'Local landscape gardening, garden maintenance, and general building services. Small jobs, Big jobs! Get in touch for a free quote.',
 }
 
@@ -25,7 +33,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${fredoka.variable} ${openSans.variable} font-body`}>
+      <body className={`${cinzel.variable} ${cinzelDecorative.variable} ${philosopher.variable} font-body`}>
         <main>{children}</main>
         <Footer />
       </body>

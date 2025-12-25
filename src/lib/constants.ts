@@ -1,6 +1,6 @@
 export const siteConfig = {
-  name: 'B8S Solutions',
-  tagline: 'Home & Garden Services',
+  name: 'Bates Groundworks',
+  tagline: 'Landscaping & Construction',
   description: 'Professional landscape gardening, garden maintenance, and general building services. Small jobs, Big jobs!',
   contact: {
     name: 'Robbie',

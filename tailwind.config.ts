@@ -10,13 +10,13 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        'b8s-navy': '#1a237e',
-        'b8s-orange': '#e65100',
-        'b8s-orange-light': '#f57c00',
+        'bates-navy': '#1a237e',
+        'bates-orange': '#e65100',
+        'bates-orange-light': '#f57c00',
       },
       fontFamily: {
-        'heading': ['Fredoka', 'sans-serif'],
-        'body': ['Open Sans', 'sans-serif'],
+        'heading': ['Cinzel', 'serif'],
+        'body': ['Philosopher', 'sans-serif'],
       },
       keyframes: {
         'brick-drop': {
@@ -49,9 +49,27 @@ const config: Config = {
             transform: 'translateY(0)',
           },
         },
+        'tool-shake': {
+          '0%, 100%': {
+            transform: 'rotate(0deg)',
+          },
+          '20%': {
+            transform: 'rotate(-3deg)',
+          },
+          '40%': {
+            transform: 'rotate(3deg)',
+          },
+          '60%': {
+            transform: 'rotate(-2deg)',
+          },
+          '80%': {
+            transform: 'rotate(2deg)',
+          },
+        },
       },
       animation: {
         'brick-drop': 'brick-drop 0.8s cubic-bezier(0.22, 0.61, 0.36, 1) both',
+        'tool-shake': 'tool-shake 0.4s ease-in-out',
       },
     },
   },

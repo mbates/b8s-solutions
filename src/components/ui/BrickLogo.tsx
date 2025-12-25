@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useRef, useCallback, useEffect } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 
 interface BrickLogoProps {
@@ -24,13 +23,12 @@ const navLinks = [
 
 // Base dimensions (in pixels) - everything scales from these
 const BASE = {
-  brickWidth: 80,
-  brickHeight: 24,
+  brickWidth: 85,
+  brickHeight: 29,
   gap: 8,
   borderRadius: 6,
   fontSize: 14,
   titleFontSize: 48,
-  toolHeight: 180,
 };
 
 // Hover movement intensity (scales with size)
@@ -43,9 +41,7 @@ const ROW_DELAY = 0.35;
 
 // Pre-computed stagger offsets for each brick
 const brickStaggerOffsets = [
-  0.0, 0.12, 0.05, 0.18, 0.08,
-  0.1, 0.0, 0.15, 0.06,
-  0.04, 0.14, 0.0, 0.1, 0.2,
+  0.0, 0.12, 0.05, 0.18, 0.08, 0.1, 0.0, 0.15, 0.06, 0.04, 0.14, 0.0, 0.1, 0.2,
 ];
 
 interface BrickTransform {
@@ -62,10 +58,18 @@ export function BrickLogo({
   animated = false,
   className = '',
 }: BrickLogoProps) {
-  const [brickTransforms, setBrickTransforms] = useState<Record<number, BrickTransform>>({});
+  const [brickTransforms, setBrickTransforms] = useState<
+    Record<number, BrickTransform>
+  >({});
   const [hasLoaded, setHasLoaded] = useState(false);
   const [animationComplete, setAnimationComplete] = useState(false);
+  const [shovelShaking, setShovelShaking] = useState(false);
+  const [forkShaking, setForkShaking] = useState(false);
+  const [contentHeight, setContentHeight] = useState<number>(0);
   const brickRefs = useRef<Record<number, HTMLDivElement | null>>({});
+  const shovelRef = useRef<HTMLDivElement | null>(null);
+  const forkRef = useRef<HTMLDivElement | null>(null);
+  const centerRef = useRef<HTMLDivElement | null>(null);
 
   // Scaled dimensions
   const brickWidth = BASE.brickWidth * scale;
@@ -74,7 +78,12 @@ export function BrickLogo({
   const borderRadius = BASE.borderRadius * scale;
   const fontSize = BASE.fontSize * scale;
   const titleFontSize = BASE.titleFontSize * scale;
-  const toolHeight = BASE.toolHeight * scale;
+
+  // Tool height - use measured content height if available, otherwise calculate
+  const brickWallHeight = brickHeight * 3 + gap * 2;
+  const titleTextHeight = showTitle ? titleFontSize * 2.4 : 0;
+  const calculatedHeight = titleTextHeight + (showTitle ? gap : 0) + brickWallHeight;
+  const toolHeight = contentHeight > 0 ? contentHeight : calculatedHeight;
 
   // Scaled hover parameters
   const moveDistance = BASE_MOVE_DISTANCE * scale;
@@ -82,46 +91,92 @@ export function BrickLogo({
   const effectRadius = BASE_EFFECT_RADIUS * scale;
 
   useEffect(() => {
-    const timer = setTimeout(() => setHasLoaded(true), 50);
-    return () => clearTimeout(timer);
+    setHasLoaded(true);
   }, []);
+
+  // Measure center content height after render
+  useEffect(() => {
+    if (centerRef.current) {
+      setContentHeight(centerRef.current.offsetHeight);
+    }
+  }, [scale, showTitle]);
 
   useEffect(() => {
     if (!hasLoaded) return;
     const maxDelay = 2 * ROW_DELAY + Math.max(...brickStaggerOffsets);
     const animationDuration = 0.8;
-    const timer = setTimeout(() => setAnimationComplete(true), (maxDelay + animationDuration) * 1000 + 100);
+    const timer = setTimeout(
+      () => setAnimationComplete(true),
+      (maxDelay + animationDuration) * 1000 + 100
+    );
     return () => clearTimeout(timer);
   }, [hasLoaded]);
 
-  const handleMouseMove = useCallback((e: React.MouseEvent) => {
-    if (!animated) return;
+  const handleMouseMove = useCallback(
+    (e: React.MouseEvent) => {
+      if (!animated) return;
 
-    const newTransforms: Record<number, BrickTransform> = {};
+      const newTransforms: Record<number, BrickTransform> = {};
 
-    Object.entries(brickRefs.current).forEach(([indexStr, brickEl]) => {
-      if (!brickEl) return;
-      const index = parseInt(indexStr);
+      Object.entries(brickRefs.current).forEach(([indexStr, brickEl]) => {
+        if (!brickEl) return;
+        const index = parseInt(indexStr);
 
-      const rect = brickEl.getBoundingClientRect();
-      const brickCenterX = rect.left + rect.width / 2;
-      const brickCenterY = rect.top + rect.height / 2;
+        const rect = brickEl.getBoundingClientRect();
+        const brickCenterX = rect.left + rect.width / 2;
+        const brickCenterY = rect.top + rect.height / 2;
 
-      const dx = brickCenterX - e.clientX;
-      const dy = brickCenterY - e.clientY;
-      const distance = Math.sqrt(dx * dx + dy * dy);
+        const dx = brickCenterX - e.clientX;
+        const dy = brickCenterY - e.clientY;
+        const distance = Math.sqrt(dx * dx + dy * dy);
 
-      if (distance > 0 && distance < effectRadius) {
-        const strength = 1 - (distance / effectRadius);
-        const x = (dx / distance) * moveDistance * strength;
-        const y = (dy / distance) * moveDistance * strength;
-        const rotate = (dx / distance) * rotateAmount * strength;
-        newTransforms[index] = { x, y, rotate };
+        if (distance > 0 && distance < effectRadius) {
+          const strength = 1 - distance / effectRadius;
+          const x = (dx / distance) * moveDistance * strength;
+          const y = (dy / distance) * moveDistance * strength;
+          const rotate = (dx / distance) * rotateAmount * strength;
+          newTransforms[index] = { x, y, rotate };
+        }
+      });
+
+      setBrickTransforms(newTransforms);
+
+      // Check proximity to tools for shake effect
+      if (shovelRef.current) {
+        const rect = shovelRef.current.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        const distance = Math.sqrt(
+          (centerX - e.clientX) ** 2 + (centerY - e.clientY) ** 2
+        );
+        if (distance < effectRadius && !shovelShaking) {
+          setShovelShaking(true);
+          setTimeout(() => setShovelShaking(false), 400);
+        }
       }
-    });
 
-    setBrickTransforms(newTransforms);
-  }, [animated, effectRadius, moveDistance, rotateAmount]);
+      if (forkRef.current) {
+        const rect = forkRef.current.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        const distance = Math.sqrt(
+          (centerX - e.clientX) ** 2 + (centerY - e.clientY) ** 2
+        );
+        if (distance < effectRadius && !forkShaking) {
+          setForkShaking(true);
+          setTimeout(() => setForkShaking(false), 400);
+        }
+      }
+    },
+    [
+      animated,
+      effectRadius,
+      moveDistance,
+      rotateAmount,
+      shovelShaking,
+      forkShaking,
+    ]
+  );
 
   const handleMouseLeave = useCallback(() => {
     setBrickTransforms({});
@@ -158,11 +213,13 @@ export function BrickLogo({
     return (
       <div
         key={`${keyPrefix}-${index}`}
-        className="relative"
-        ref={(el) => { brickRefs.current[index] = el; }}
+        className='relative'
+        ref={(el) => {
+          brickRefs.current[index] = el;
+        }}
       >
         <div
-          className={`bg-b8s-orange transition-transform duration-300 ease-out ${stateClass}`}
+          className={`bg-bates-orange transition-transform duration-300 ease-out ${stateClass}`}
           style={{
             ...brickStyle,
             transform: animationComplete ? getTransform(index) : undefined,
@@ -188,12 +245,14 @@ export function BrickLogo({
     return (
       <div
         key={`nav-${index}`}
-        className="relative"
-        ref={(el) => { brickRefs.current[index] = el; }}
+        className='relative'
+        ref={(el) => {
+          brickRefs.current[index] = el;
+        }}
       >
         <Link
           href={nav.href}
-          className={`bg-b8s-orange hover:bg-b8s-orange-light cursor-pointer flex items-center justify-center transition-transform duration-300 ease-out ${stateClass}`}
+          className={`bg-bates-orange hover:bg-bates-orange-light cursor-pointer flex items-center justify-center transition-transform duration-300 ease-out ${stateClass}`}
           style={{
             ...brickStyle,
             transform: animationComplete ? getTransform(index) : undefined,
@@ -202,7 +261,7 @@ export function BrickLogo({
           }}
         >
           <span
-            className="text-white font-heading font-semibold"
+            className='text-white font-heading font-semibold'
             style={{ fontSize }}
           >
             {nav.label}
@@ -214,23 +273,22 @@ export function BrickLogo({
 
   const bricks = (
     <div
-      className="inline-flex flex-col"
+      className='inline-flex flex-col'
       style={{ gap }}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >
-      <div className="flex" style={{ gap }}>
+      <div className='flex' style={{ gap }}>
         {[0, 1, 2, 3, 4].map((i) => renderBrick(i, 'r1'))}
       </div>
 
-      <div className="flex justify-center" style={{ gap }}>
+      <div className='flex justify-center' style={{ gap }}>
         {showNavLinks
           ? [5, 6, 7, 8].map((i, navIdx) => renderNavBrick(i, navIdx))
-          : [5, 6, 7, 8].map((i) => renderBrick(i, 'r2'))
-        }
+          : [5, 6, 7, 8].map((i) => renderBrick(i, 'r2'))}
       </div>
 
-      <div className="flex" style={{ gap }}>
+      <div className='flex' style={{ gap }}>
         {[9, 10, 11, 12, 13].map((i) => renderBrick(i, 'r3'))}
       </div>
     </div>
@@ -238,10 +296,11 @@ export function BrickLogo({
 
   const title = showTitle ? (
     <h1
-      className="font-heading font-bold text-b8s-navy"
-      style={{ fontSize: titleFontSize }}
+      className='font-logo font-bold text-bates-navy flex flex-col items-center'
+      style={{ fontSize: titleFontSize, lineHeight: 1.1 }}
     >
-      B8S Solutions
+      <span style={{ letterSpacing: '0.35em' }}>Bates</span>
+      <span>Groundworks</span>
     </h1>
   ) : null;
 
@@ -256,26 +315,29 @@ export function BrickLogo({
 
   return (
     <div className={`inline-flex items-center ${className}`} style={{ gap }}>
-      <Image
-        src="/shovel.svg"
-        alt="Shovel"
-        width={48}
-        height={96}
-        style={{ height: toolHeight, width: 'auto' }}
-      />
+      <div
+        ref={shovelRef}
+        className={shovelShaking ? 'animate-tool-shake' : ''}
+      >
+        <img
+          src='/shovel.svg'
+          alt='Shovel'
+          style={{ height: `${toolHeight}px`, width: 'auto' }}
+        />
+      </div>
 
-      <div className="flex flex-col items-center" style={{ gap }}>
+      <div ref={centerRef} className='flex flex-col items-center' style={{ gap }}>
         {title}
         {bricks}
       </div>
 
-      <Image
-        src="/garden-fork.svg"
-        alt="Garden Fork"
-        width={48}
-        height={96}
-        style={{ height: toolHeight, width: 'auto' }}
-      />
+      <div ref={forkRef} className={forkShaking ? 'animate-tool-shake' : ''}>
+        <img
+          src='/garden-fork.svg'
+          alt='Garden Fork'
+          style={{ height: `${toolHeight}px`, width: 'auto' }}
+        />
+      </div>
     </div>
   );
 }

@@ -8,12 +8,15 @@ terraform {
     }
   }
 
-  backend "s3" {
-    # Configure your backend
-    # bucket = "your-terraform-state-bucket"
-    # key    = "b8s-solutions/terraform.tfstate"
-    # region = "eu-west-2"
-  }
+  # Backend configuration - uncomment after creating the state bucket:
+  #   aws s3 mb s3://b8s-solutions-terraform-state --region eu-west-2
+  #   aws s3api put-bucket-versioning --bucket b8s-solutions-terraform-state --versioning-configuration Status=Enabled
+  #
+  # backend "s3" {
+  #   bucket = "b8s-solutions-terraform-state"
+  #   key    = "b8s-solutions/terraform.tfstate"
+  #   region = "eu-west-2"
+  # }
 }
 
 provider "aws" {

@@ -1,0 +1,17 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalDependencies": ["**/.env.*local"],
+  "tasks": {
+    "build:next": {
+      "inputs": ["src/**", "public/**", "*.config.*", "*.json", "!turbo.json"],
+      "outputs": [".next/**", "out/**", "!.next/cache/**"]
+    },
+    "lint:next": {
+      "inputs": ["src/**"]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    }
+  }
+}
