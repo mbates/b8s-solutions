@@ -1,5 +1,7 @@
 # Services Page Plan
 
+## Status: ✅ Complete
+
 ## Objective
 Create a comprehensive services page showcasing all services offered by Bates Groundworks.
 
@@ -14,7 +16,7 @@ Create a comprehensive services page showcasing all services offered by Bates Gr
 - Lighting installation
 
 ### Garden Maintenance
-- Regular garden maintenance contracts
+- Regular maintenance contracts
 - One-off garden tidy-ups
 - Hedge trimming
 - Lawn care (mowing, feeding, aeration)
@@ -31,40 +33,39 @@ Create a comprehensive services page showcasing all services offered by Bates Gr
 
 ## Page Structure
 
-### 1. Hero Section
+### 1. Hero Section ✅
 - Page title: "Our Services"
 - Brief intro text
-- Decorative BrickLogo (smaller scale, no nav links)
 
-### 2. Services Grid
+### 2. Services Grid ✅
 - Card-based layout (3 columns on desktop, 1 on mobile)
 - Each card includes:
-  - Icon or image
+  - Icon
   - Service category title
-  - Brief description
-  - List of sub-services
+  - Long description
+  - List of all features
   - "Get a Quote" CTA linking to contact with service pre-selected
 
-### 3. Process Section
-- How we work:
-  1. Initial consultation (free)
-  2. Quote and design
-  3. Project execution
-  4. Final walkthrough
+### 3. Process Section ✅
+- How we work (4 steps with numbered circles):
+  1. Free Consultation
+  2. Quote & Design
+  3. Project Execution
+  4. Final Walkthrough
 
-### 4. Call to Action
-- Reuse existing CallToAction component
+### 4. Call to Action ✅
+- Reuses existing CallToAction component
 
 ## Technical Tasks
 
-- [ ] Create `/src/app/services/page.tsx`
-- [ ] Create `/src/components/sections/ServiceCard.tsx`
-- [ ] Create `/src/components/sections/ProcessSteps.tsx`
-- [ ] Add service icons to `/public/icons/`
-- [ ] Update `siteConfig` with service data
-- [ ] Add meta tags for SEO
+- [x] Create `/src/app/services/page.tsx`
+- [x] Update `siteConfig` with expanded service data (longDescription, more features)
+- [x] Add `process` steps to siteConfig
+- [x] Add meta tags for SEO
+- [x] Build passes successfully
 
-## Design Notes
-- Use consistent orange/navy color scheme
-- Cards should have subtle hover effects
-- Consider parallax or scroll animations
+## Implementation Notes
+- Services and process steps inline in page (no separate components needed)
+- Icons are inline SVGs matching existing ServicesPreview style
+- Responsive grid: 1 column mobile, 3 columns desktop
+- Process section uses connector lines on desktop
