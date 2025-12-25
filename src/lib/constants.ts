@@ -81,6 +81,56 @@ export const siteConfig = {
     { label: 'About', href: '/about' },
     { label: 'Contact', href: '/contact' },
   ],
+  about: {
+    story: {
+      title: 'Our Story',
+      paragraphs: [
+        'Bates Groundworks was founded with a simple mission: to deliver quality landscaping and building work that stands the test of time. What started as a one-man operation has grown into a trusted local business serving Surrey and Hampshire.',
+        'With years of hands-on experience in the trade, we understand that every outdoor space is unique. Whether it\'s a small garden tidy-up or a complete property transformation, we bring the same level of care, attention to detail, and professional craftsmanship to every project.',
+        'We believe in honest pricing, clear communication, and doing the job right first time. That\'s why so much of our work comes from recommendations and returning customers.',
+      ],
+    },
+    values: [
+      {
+        title: 'Quality Workmanship',
+        description: 'Every project is completed to the highest standards using quality materials and proven techniques.',
+        icon: 'quality',
+      },
+      {
+        title: 'Reliability',
+        description: 'We turn up when we say we will, keep you informed, and deliver on our promises.',
+        icon: 'reliability',
+      },
+      {
+        title: 'Clear Communication',
+        description: 'No jargon, no hidden costs. We explain everything clearly and keep you updated throughout.',
+        icon: 'communication',
+      },
+      {
+        title: 'Customer Focus',
+        description: 'Your satisfaction is our priority. We work with you to bring your vision to life.',
+        icon: 'customer',
+      },
+    ],
+    serviceAreas: [
+      'Surrey',
+      'Hampshire',
+      'Guildford',
+      'Farnham',
+      'Aldershot',
+      'Fleet',
+      'Farnborough',
+      'Camberley',
+      'Woking',
+      'Godalming',
+    ],
+    credentials: [
+      'Fully insured',
+      'Public liability coverage',
+      'Waste carrier licence',
+      'Free quotes and consultations',
+    ],
+  },
   projects: [
     {
       id: '1',
