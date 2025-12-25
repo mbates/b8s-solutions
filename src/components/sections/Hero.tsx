@@ -5,18 +5,13 @@ export function Hero() {
   return (
     <section className="bg-white py-12 md:py-20">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        {/* Company Name */}
-        <h1 className="font-heading text-5xl md:text-7xl font-bold text-b8s-navy mb-4">
-          B8S Solutions
-        </h1>
-
-        {/* Main Logo - The Focus */}
+        {/* Main Logo with Title */}
         <div className="mb-6">
-          <BrickLogo size="hero" showTools={true} showNavLinks={true} animated={true} />
+          <BrickLogo size="hero" showTools={true} showNavLinks={true} showTitle={true} animated={true} />
         </div>
 
         {/* Tagline */}
-        <p className="font-heading text-2xl md:text-3xl text-b8s-orange mb-6">
+        <p className="font-heading text-5xl text-b8s-navy mb-6">
           Home & Garden Services
         </p>
 

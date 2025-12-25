@@ -8,6 +8,7 @@ interface BrickLogoProps {
   size?: 'sm' | 'md' | 'lg' | 'xl' | 'hero';
   showTools?: boolean;
   showNavLinks?: boolean;
+  showTitle?: boolean;
   animated?: boolean;
   className?: string;
 }
@@ -21,11 +22,11 @@ const navLinks = [
 ];
 
 const sizes = {
-  sm: { brick: 'w-6 h-2', gap: 'gap-0.5', rounded: 'rounded-sm', tool: 'h-[1.75rem]', text: 'text-[6px]' },
-  md: { brick: 'w-10 h-3', gap: 'gap-1', rounded: 'rounded', tool: 'h-[2.75rem]', text: 'text-[8px]' },
-  lg: { brick: 'w-14 h-4', gap: 'gap-1', rounded: 'rounded', tool: 'h-[3.5rem]', text: 'text-[10px]' },
-  xl: { brick: 'w-16 h-5', gap: 'gap-1.5', rounded: 'rounded-md', tool: 'h-[4.5rem]', text: 'text-xs' },
-  hero: { brick: 'w-20 h-6', gap: 'gap-2', rounded: 'rounded-md', tool: 'h-[5.5rem]', text: 'text-sm' },
+  sm: { brick: 'w-6 h-2', gap: 'gap-0.5', rounded: 'rounded-sm', tool: 'h-[3.5rem]', text: 'text-[6px]', title: 'text-lg' },
+  md: { brick: 'w-10 h-3', gap: 'gap-1', rounded: 'rounded', tool: 'h-[6rem]', text: 'text-[8px]', title: 'text-2xl' },
+  lg: { brick: 'w-14 h-4', gap: 'gap-1', rounded: 'rounded', tool: 'h-[8rem]', text: 'text-[10px]', title: 'text-3xl' },
+  xl: { brick: 'w-16 h-5', gap: 'gap-1.5', rounded: 'rounded-md', tool: 'h-[10rem]', text: 'text-xs', title: 'text-4xl' },
+  hero: { brick: 'w-20 h-6', gap: 'gap-2', rounded: 'rounded-md', tool: 'h-[12rem]', text: 'text-sm', title: 'text-5xl md:text-7xl' },
 };
 
 // Hover movement intensity
@@ -56,6 +57,7 @@ export function BrickLogo({
   size = 'md',
   showTools = false,
   showNavLinks = false,
+  showTitle = false,
   animated = false,
   className = '',
 }: BrickLogoProps) {
@@ -228,10 +230,23 @@ export function BrickLogo({
     </div>
   );
 
+  const title = showTitle ? (
+    <h1 className={`font-heading ${s.title} font-bold text-b8s-navy`}>
+      B8S Solutions
+    </h1>
+  ) : null;
+
   if (!showTools) {
-    return <div className={className}>{bricks}</div>;
+    return (
+      <div className={className}>
+        {title}
+        {bricks}
+      </div>
+    );
   }
 
+  // Layout: Shovel | Title+Bricks | Fork
+  // Title spans above bricks, tools span both rows
   return (
     <div className={`inline-flex items-center ${s.gap} ${className}`}>
       <Image
@@ -242,7 +257,10 @@ export function BrickLogo({
         className={`${s.tool} w-auto`}
       />
 
-      {bricks}
+      <div className={`flex flex-col items-center ${s.gap}`}>
+        {title}
+        {bricks}
+      </div>
 
       <Image
         src="/garden-fork.svg"
