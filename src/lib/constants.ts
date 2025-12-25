@@ -131,6 +131,26 @@ export const siteConfig = {
       'Free quotes and consultations',
     ],
   },
+  contactPage: {
+    hero: {
+      title: 'Get In Touch',
+      subtitle: 'Ready to transform your outdoor space? Contact us for a free, no-obligation quote.',
+    },
+    form: {
+      services: [
+        'Landscape Gardening',
+        'Garden Maintenance',
+        'General Building',
+        'Patios & Paving',
+        'Fencing & Gates',
+        'Other',
+      ],
+    },
+    info: {
+      hours: 'Monday - Friday: 8am - 6pm\nSaturday: 9am - 4pm\nSunday: Closed',
+      response: 'We aim to respond to all enquiries within 24 hours.',
+    },
+  },
   projects: [
     {
       id: '1',
