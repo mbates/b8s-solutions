@@ -6,7 +6,18 @@
       "Bash(npm run build:*)",
       "Bash(cat:*)",
       "Bash(git push:*)",
-      "Bash(git stash:*)"
+      "Bash(git stash:*)",
+      "Bash(git checkout:*)",
+      "Bash(git merge:*)",
+      "Bash(git branch:*)",
+      "Bash(AWS_PROFILE=bates terraform output:*)",
+      "Bash(aws configure get:*)",
+      "Bash(gh secret set:*)",
+      "Bash(gh secret:*)",
+      "Bash(gh run list:*)",
+      "Bash(gh run view:*)",
+      "Bash(npm run lint)",
+      "Bash(npx eslint:*)"
     ]
   }
 }
