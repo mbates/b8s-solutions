@@ -5,7 +5,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 interface BrickLogoProps {
-  size?: 'sm' | 'md' | 'lg' | 'xl' | 'hero';
+  /** Scale multiplier - 1 is base size, 2 is double, 0.5 is half, etc. */
+  scale?: number;
   showTools?: boolean;
   showNavLinks?: boolean;
   showTitle?: boolean;
@@ -21,29 +22,29 @@ const navLinks = [
   { href: '/contact', label: 'Contact' },
 ];
 
-const sizes = {
-  sm: { brick: 'w-9 h-3', gap: 'gap-1', rounded: 'rounded-sm', tool: 'h-[5rem]', text: 'text-[9px]', title: 'text-xl' },
-  md: { brick: 'w-[3.75rem] h-[1.125rem]', gap: 'gap-1.5', rounded: 'rounded', tool: 'h-[9rem]', text: 'text-[12px]', title: 'text-3xl' },
-  lg: { brick: 'w-[5.25rem] h-6', gap: 'gap-1.5', rounded: 'rounded', tool: 'h-[12rem]', text: 'text-[15px]', title: 'text-4xl' },
-  xl: { brick: 'w-24 h-[1.875rem]', gap: 'gap-2', rounded: 'rounded-md', tool: 'h-[15rem]', text: 'text-base', title: 'text-5xl' },
-  hero: { brick: 'w-[7.5rem] h-9', gap: 'gap-3', rounded: 'rounded-md', tool: 'h-[18rem]', text: 'text-lg', title: 'text-6xl md:text-8xl' },
+// Base dimensions (in pixels) - everything scales from these
+const BASE = {
+  brickWidth: 80,
+  brickHeight: 24,
+  gap: 8,
+  borderRadius: 6,
+  fontSize: 14,
+  titleFontSize: 48,
+  toolHeight: 180,
 };
 
-// Hover movement intensity
-const MOVE_DISTANCE = 12;
-const ROTATE_AMOUNT = 8;
-const EFFECT_RADIUS = 120; // pixels - how far the mouse effect reaches
+// Hover movement intensity (scales with size)
+const BASE_MOVE_DISTANCE = 8;
+const BASE_ROTATE_AMOUNT = 6;
+const BASE_EFFECT_RADIUS = 100;
 
 // Loading animation timing - Matrix-style cascade
-const ROW_DELAY = 0.35; // seconds between each row
+const ROW_DELAY = 0.35;
 
-// Pre-computed stagger offsets for each brick - more spread out like Matrix rain
+// Pre-computed stagger offsets for each brick
 const brickStaggerOffsets = [
-  // Row 1 (5 bricks)
   0.0, 0.12, 0.05, 0.18, 0.08,
-  // Row 2 (4 bricks)
   0.1, 0.0, 0.15, 0.06,
-  // Row 3 (5 bricks)
   0.04, 0.14, 0.0, 0.1, 0.2,
 ];
 
@@ -54,44 +55,50 @@ interface BrickTransform {
 }
 
 export function BrickLogo({
-  size = 'md',
+  scale = 1,
   showTools = false,
   showNavLinks = false,
   showTitle = false,
   animated = false,
   className = '',
 }: BrickLogoProps) {
-  const s = sizes[size];
   const [brickTransforms, setBrickTransforms] = useState<Record<number, BrickTransform>>({});
   const [hasLoaded, setHasLoaded] = useState(false);
   const [animationComplete, setAnimationComplete] = useState(false);
   const brickRefs = useRef<Record<number, HTMLDivElement | null>>({});
 
-  // Trigger loading animation on mount
+  // Scaled dimensions
+  const brickWidth = BASE.brickWidth * scale;
+  const brickHeight = BASE.brickHeight * scale;
+  const gap = BASE.gap * scale;
+  const borderRadius = BASE.borderRadius * scale;
+  const fontSize = BASE.fontSize * scale;
+  const titleFontSize = BASE.titleFontSize * scale;
+  const toolHeight = BASE.toolHeight * scale;
+
+  // Scaled hover parameters
+  const moveDistance = BASE_MOVE_DISTANCE * scale;
+  const rotateAmount = BASE_ROTATE_AMOUNT * scale;
+  const effectRadius = BASE_EFFECT_RADIUS * scale;
+
   useEffect(() => {
-    // Small delay to ensure CSS is ready
     const timer = setTimeout(() => setHasLoaded(true), 50);
     return () => clearTimeout(timer);
   }, []);
 
-  // Mark animation complete after all bricks have dropped
   useEffect(() => {
     if (!hasLoaded) return;
-    // Calculate max animation time: last row delay + max stagger + animation duration
     const maxDelay = 2 * ROW_DELAY + Math.max(...brickStaggerOffsets);
-    const animationDuration = 0.8; // matches tailwind config
+    const animationDuration = 0.8;
     const timer = setTimeout(() => setAnimationComplete(true), (maxDelay + animationDuration) * 1000 + 100);
     return () => clearTimeout(timer);
   }, [hasLoaded]);
-
-  const brickClass = `${s.brick} bg-b8s-orange ${s.rounded} transition-transform duration-300 ease-out`;
 
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
     if (!animated) return;
 
     const newTransforms: Record<number, BrickTransform> = {};
 
-    // Calculate transform for each brick based on mouse position
     Object.entries(brickRefs.current).forEach(([indexStr, brickEl]) => {
       if (!brickEl) return;
       const index = parseInt(indexStr);
@@ -100,27 +107,21 @@ export function BrickLogo({
       const brickCenterX = rect.left + rect.width / 2;
       const brickCenterY = rect.top + rect.height / 2;
 
-      // Calculate direction away from mouse
       const dx = brickCenterX - e.clientX;
       const dy = brickCenterY - e.clientY;
       const distance = Math.sqrt(dx * dx + dy * dy);
 
-      // Only affect bricks within the effect radius
-      if (distance > 0 && distance < EFFECT_RADIUS) {
-        // Strength falls off with distance
-        const strength = 1 - (distance / EFFECT_RADIUS);
-
-        // Normalize and scale
-        const x = (dx / distance) * MOVE_DISTANCE * strength;
-        const y = (dy / distance) * MOVE_DISTANCE * strength;
-        const rotate = (dx / distance) * ROTATE_AMOUNT * strength;
-
+      if (distance > 0 && distance < effectRadius) {
+        const strength = 1 - (distance / effectRadius);
+        const x = (dx / distance) * moveDistance * strength;
+        const y = (dy / distance) * moveDistance * strength;
+        const rotate = (dx / distance) * rotateAmount * strength;
         newTransforms[index] = { x, y, rotate };
       }
     });
 
     setBrickTransforms(newTransforms);
-  }, [animated]);
+  }, [animated, effectRadius, moveDistance, rotateAmount]);
 
   const handleMouseLeave = useCallback(() => {
     setBrickTransforms({});
@@ -132,11 +133,16 @@ export function BrickLogo({
     return `translate(${transform.x}px, ${transform.y}px) rotate(${transform.rotate}deg)`;
   };
 
-  // Get the row number for a brick index (reversed - bottom first)
   const getRowForBrick = (index: number) => {
-    if (index < 5) return 2;  // Top row drops last
-    if (index < 9) return 1;  // Middle row drops second
-    return 0;                  // Bottom row drops first
+    if (index < 5) return 2;
+    if (index < 9) return 1;
+    return 0;
+  };
+
+  const brickStyle: React.CSSProperties = {
+    width: brickWidth,
+    height: brickHeight,
+    borderRadius: borderRadius,
   };
 
   const renderBrick = (index: number, keyPrefix: string) => {
@@ -144,10 +150,9 @@ export function BrickLogo({
     const stagger = brickStaggerOffsets[index] || 0;
     const animationDelay = `${row * ROW_DELAY + stagger}s`;
 
-    // Determine brick state classes
-    let stateClass = 'animate-brick-drop'; // Always use animation class
+    let stateClass = 'animate-brick-drop';
     if (animationComplete) {
-      stateClass = ''; // Remove animation class once complete for hover to work
+      stateClass = '';
     }
 
     return (
@@ -156,10 +161,10 @@ export function BrickLogo({
         className="relative"
         ref={(el) => { brickRefs.current[index] = el; }}
       >
-        {/* Visible brick */}
         <div
-          className={`${brickClass} ${stateClass}`}
+          className={`bg-b8s-orange transition-transform duration-300 ease-out ${stateClass}`}
           style={{
+            ...brickStyle,
             transform: animationComplete ? getTransform(index) : undefined,
             animationDelay: !animationComplete ? animationDelay : undefined,
             animationPlayState: hasLoaded ? 'running' : 'paused',
@@ -175,7 +180,6 @@ export function BrickLogo({
     const animationDelay = `${row * ROW_DELAY + stagger}s`;
     const nav = navLinks[navIndex];
 
-    // Determine brick state classes
     let stateClass = 'animate-brick-drop';
     if (animationComplete) {
       stateClass = '';
@@ -189,14 +193,18 @@ export function BrickLogo({
       >
         <Link
           href={nav.href}
-          className={`${brickClass} ${stateClass} flex items-center justify-center hover:bg-b8s-orange-light cursor-pointer`}
+          className={`bg-b8s-orange hover:bg-b8s-orange-light cursor-pointer flex items-center justify-center transition-transform duration-300 ease-out ${stateClass}`}
           style={{
+            ...brickStyle,
             transform: animationComplete ? getTransform(index) : undefined,
             animationDelay: !animationComplete ? animationDelay : undefined,
             animationPlayState: hasLoaded ? 'running' : 'paused',
           }}
         >
-          <span className={`text-white font-heading ${s.text} font-semibold`}>
+          <span
+            className="text-white font-heading font-semibold"
+            style={{ fontSize }}
+          >
             {nav.label}
           </span>
         </Link>
@@ -206,32 +214,33 @@ export function BrickLogo({
 
   const bricks = (
     <div
-      className={`inline-flex flex-col ${s.gap}`}
+      className="inline-flex flex-col"
+      style={{ gap }}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >
-      {/* Row 1: 5 bricks */}
-      <div className={`flex ${s.gap}`}>
+      <div className="flex" style={{ gap }}>
         {[0, 1, 2, 3, 4].map((i) => renderBrick(i, 'r1'))}
       </div>
 
-      {/* Row 2: 4 bricks (navigation links when enabled) */}
-      <div className={`flex ${s.gap} justify-center`}>
+      <div className="flex justify-center" style={{ gap }}>
         {showNavLinks
           ? [5, 6, 7, 8].map((i, navIdx) => renderNavBrick(i, navIdx))
           : [5, 6, 7, 8].map((i) => renderBrick(i, 'r2'))
         }
       </div>
 
-      {/* Row 3: 5 bricks */}
-      <div className={`flex ${s.gap}`}>
+      <div className="flex" style={{ gap }}>
         {[9, 10, 11, 12, 13].map((i) => renderBrick(i, 'r3'))}
       </div>
     </div>
   );
 
   const title = showTitle ? (
-    <h1 className={`font-heading ${s.title} font-bold text-b8s-navy`}>
+    <h1
+      className="font-heading font-bold text-b8s-navy"
+      style={{ fontSize: titleFontSize }}
+    >
       B8S Solutions
     </h1>
   ) : null;
@@ -245,19 +254,17 @@ export function BrickLogo({
     );
   }
 
-  // Layout: Shovel | Title+Bricks | Fork
-  // Title spans above bricks, tools span both rows
   return (
-    <div className={`inline-flex items-center ${s.gap} ${className}`}>
+    <div className={`inline-flex items-center ${className}`} style={{ gap }}>
       <Image
         src="/shovel.svg"
         alt="Shovel"
         width={48}
         height={96}
-        className={`${s.tool} w-auto`}
+        style={{ height: toolHeight, width: 'auto' }}
       />
 
-      <div className={`flex flex-col items-center ${s.gap}`}>
+      <div className="flex flex-col items-center" style={{ gap }}>
         {title}
         {bricks}
       </div>
@@ -267,7 +274,7 @@ export function BrickLogo({
         alt="Garden Fork"
         width={48}
         height={96}
-        className={`${s.tool} w-auto`}
+        style={{ height: toolHeight, width: 'auto' }}
       />
     </div>
   );

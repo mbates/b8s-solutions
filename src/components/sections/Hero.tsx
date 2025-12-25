@@ -7,7 +7,7 @@ export function Hero() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         {/* Main Logo with Title */}
         <div className="mb-6">
-          <BrickLogo size="hero" showTools={true} showNavLinks={true} showTitle={true} animated={true} />
+          <BrickLogo scale={1.5} showTools={true} showNavLinks={true} showTitle={true} animated={true} />
         </div>
 
         {/* Tagline */}

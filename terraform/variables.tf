@@ -1,17 +1,29 @@
 variable "aws_region" {
-  description = "AWS region for resources"
+  description = "AWS region for S3 bucket"
   type        = string
-  default     = "us-east-1"
+  default     = "eu-west-2"
 }
 
 variable "environment" {
   description = "Deployment environment"
   type        = string
-  default     = "dev"
+  default     = "production"
 }
 
 variable "app_name" {
   description = "Application name"
   type        = string
   default     = "b8s-solutions"
+}
+
+variable "domain_name" {
+  description = "Domain name for the website"
+  type        = string
+  default     = "b8s.bates-solutions.com"
+}
+
+variable "hosted_zone_name" {
+  description = "Route53 hosted zone name (parent domain)"
+  type        = string
+  default     = "bates-solutions.com"
 }
