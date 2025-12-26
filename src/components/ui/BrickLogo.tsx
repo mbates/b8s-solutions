@@ -19,7 +19,7 @@ interface BrickLogoProps {
 
 // Navigation links for middle row bricks
 const navLinks = [
-  { href: '/services', label: 'Services' },
+  { href: '/', label: 'Services' },
   { href: '/projects', label: 'Projects' },
   { href: '/about', label: 'About' },
   { href: '/contact', label: 'Contact' },
@@ -257,7 +257,10 @@ export function BrickLogo({
     const stagger = brickStaggerOffsets[index] || 0;
     const animationDelay = `${row * ROW_DELAY + stagger}s`;
     const nav = navLinks[navIndex];
-    const isActive = pathname === nav.href || pathname?.startsWith(nav.href + '/');
+    // For root path, only match exact. For others, match prefix for sub-pages
+    const isActive = nav.href === '/'
+      ? pathname === '/'
+      : pathname === nav.href || pathname?.startsWith(nav.href + '/');
 
     let stateClass = 'animate-brick-drop';
     if (animationComplete) {

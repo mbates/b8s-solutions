@@ -80,8 +80,7 @@ export const siteConfig = {
     },
   ],
   navigation: [
-    { label: 'Home', href: '/' },
-    { label: 'Services', href: '/services' },
+    { label: 'Services', href: '/' },
     { label: 'Projects', href: '/projects' },
     { label: 'About', href: '/about' },
     { label: 'Contact', href: '/contact' },
