@@ -2,7 +2,6 @@ import type { Metadata } from 'next'
 import { Cinzel, Cinzel_Decorative, Philosopher } from 'next/font/google'
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
-import { PageTransition } from '@/components/layout/PageTransition'
 import './globals.css'
 
 const cinzel = Cinzel({
@@ -38,7 +37,7 @@ export default function RootLayout({
       <body className={`${cinzel.variable} ${cinzelDecorative.variable} ${philosopher.variable} font-body`}>
         <Header />
         <main>
-          <PageTransition>{children}</PageTransition>
+          {children}
         </main>
         <Footer />
       </body>
