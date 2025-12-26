@@ -4,6 +4,9 @@ import { useState, useRef, useCallback, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
+// Session storage key for tracking if animation has played
+const ANIMATION_PLAYED_KEY = 'brickAnimationPlayed';
+
 interface BrickLogoProps {
   /** Scale multiplier - 1 is base size, 2 is double, 0.5 is half, etc. */
   scale?: number;
@@ -64,6 +67,7 @@ export function BrickLogo({
     Record<number, BrickTransform>
   >({});
   const [hasLoaded, setHasLoaded] = useState(false);
+  const [animationAlreadyPlayed, setAnimationAlreadyPlayed] = useState(false);
   const [animationComplete, setAnimationComplete] = useState(false);
   const [shovelShaking, setShovelShaking] = useState(false);
   const [forkShaking, setForkShaking] = useState(false);
@@ -92,7 +96,17 @@ export function BrickLogo({
   const rotateAmount = BASE_ROTATE_AMOUNT * scale;
   const effectRadius = BASE_EFFECT_RADIUS * scale;
 
+  // Check sessionStorage on mount to see if animation already played this session
   useEffect(() => {
+    try {
+      const alreadyPlayed = sessionStorage.getItem(ANIMATION_PLAYED_KEY) === 'true';
+      if (alreadyPlayed) {
+        setAnimationAlreadyPlayed(true);
+        setAnimationComplete(true);
+      }
+    } catch {
+      // sessionStorage not available (SSR or privacy mode)
+    }
     setHasLoaded(true);
   }, []);
 
@@ -103,16 +117,21 @@ export function BrickLogo({
     }
   }, [scale, showTitle]);
 
+  // Set animation complete after animation finishes, and persist to sessionStorage
   useEffect(() => {
-    if (!hasLoaded) return;
+    if (!hasLoaded || animationAlreadyPlayed) return;
     const maxDelay = 2 * ROW_DELAY + Math.max(...brickStaggerOffsets);
     const animationDuration = 0.8;
-    const timer = setTimeout(
-      () => setAnimationComplete(true),
-      (maxDelay + animationDuration) * 1000 + 100
-    );
+    const timer = setTimeout(() => {
+      setAnimationComplete(true);
+      try {
+        sessionStorage.setItem(ANIMATION_PLAYED_KEY, 'true');
+      } catch {
+        // sessionStorage not available
+      }
+    }, (maxDelay + animationDuration) * 1000 + 100);
     return () => clearTimeout(timer);
-  }, [hasLoaded]);
+  }, [hasLoaded, animationAlreadyPlayed]);
 
   const handleMouseMove = useCallback(
     (e: React.MouseEvent) => {
