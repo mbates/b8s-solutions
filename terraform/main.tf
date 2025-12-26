@@ -117,6 +117,31 @@ resource "aws_acm_certificate_validation" "website" {
   validation_record_fqdns = [for record in aws_route53_record.cert_validation : record.fqdn]
 }
 
+# CloudFront Function for SPA routing
+resource "aws_cloudfront_function" "spa_rewrite" {
+  name    = "${var.app_name}-spa-rewrite"
+  runtime = "cloudfront-js-2.0"
+  comment = "Rewrites requests for SPA routing"
+  publish = true
+  code    = <<-EOF
+    function handler(event) {
+      var request = event.request;
+      var uri = request.uri;
+
+      // Don't rewrite requests for static assets
+      if (uri.startsWith('/_next/') ||
+          uri.match(/\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot|json)$/)) {
+        return request;
+      }
+
+      // For all other requests, serve index.html (SPA mode)
+      // The Next.js client-side router will handle the actual routing
+      request.uri = '/index.html';
+      return request;
+    }
+  EOF
+}
+
 # CloudFront distribution
 resource "aws_cloudfront_distribution" "website" {
   enabled             = true
@@ -149,19 +174,27 @@ resource "aws_cloudfront_distribution" "website" {
     default_ttl            = 3600
     max_ttl                = 86400
     compress               = true
+
+    # SPA rewrite function
+    function_association {
+      event_type   = "viewer-request"
+      function_arn = aws_cloudfront_function.spa_rewrite.arn
+    }
   }
 
-  # Handle Next.js static export routing
+  # Handle errors - serve index.html for SPA routing
   custom_error_response {
-    error_code         = 404
-    response_code      = 404
-    response_page_path = "/404.html"
+    error_code            = 404
+    response_code         = 200
+    response_page_path    = "/index.html"
+    error_caching_min_ttl = 0
   }
 
   custom_error_response {
-    error_code         = 403
-    response_code      = 200
-    response_page_path = "/index.html"
+    error_code            = 403
+    response_code         = 200
+    response_page_path    = "/index.html"
+    error_caching_min_ttl = 0
   }
 
   restrictions {
