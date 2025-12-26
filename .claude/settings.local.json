@@ -23,7 +23,9 @@
       "Bash(powershell:*)",
       "Bash(gh run watch:*)",
       "Bash(terraform plan:*)",
-      "Bash(terraform apply:*)"
+      "Bash(terraform apply:*)",
+      "Bash(AWS_PROFILE=bates terraform plan:*)",
+      "Bash(git cherry-pick:*)"
     ]
   }
 }

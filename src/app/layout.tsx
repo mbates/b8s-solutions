@@ -36,7 +36,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${cinzel.variable} ${cinzelDecorative.variable} ${philosopher.variable} font-body`}>
         <Header />
-        <main>{children}</main>
+        <main>
+          {children}
+        </main>
         <Footer />
       </body>
     </html>
