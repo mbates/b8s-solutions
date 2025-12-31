@@ -117,6 +117,30 @@ resource "aws_acm_certificate_validation" "website" {
   validation_record_fqdns = [for record in aws_route53_record.cert_validation : record.fqdn]
 }
 
+# CloudFront Function to handle directory index files
+resource "aws_cloudfront_function" "directory_index" {
+  name    = "${var.app_name}-directory-index"
+  runtime = "cloudfront-js-2.0"
+  comment = "Rewrites directory requests to index.html"
+  publish = true
+  code    = <<-EOF
+    function handler(event) {
+      var request = event.request;
+      var uri = request.uri;
+
+      // If URI ends with / or has no extension, append index.html
+      if (uri.endsWith('/')) {
+        request.uri += 'index.html';
+      } else if (!uri.includes('.')) {
+        // No file extension - add trailing slash and index.html
+        request.uri += '/index.html';
+      }
+
+      return request;
+    }
+  EOF
+}
+
 # CloudFront distribution
 resource "aws_cloudfront_distribution" "website" {
   enabled             = true
@@ -149,19 +173,25 @@ resource "aws_cloudfront_distribution" "website" {
     default_ttl            = 3600
     max_ttl                = 86400
     compress               = true
+
+    function_association {
+      event_type   = "viewer-request"
+      function_arn = aws_cloudfront_function.directory_index.arn
+    }
   }
 
-  # Handle Next.js static export routing
+  # Handle 404 errors
   custom_error_response {
     error_code         = 404
     response_code      = 404
     response_page_path = "/404.html"
   }
 
+  # Handle 403 errors (e.g., missing files)
   custom_error_response {
     error_code         = 403
-    response_code      = 200
-    response_page_path = "/index.html"
+    response_code      = 404
+    response_page_path = "/404.html"
   }
 
   restrictions {
