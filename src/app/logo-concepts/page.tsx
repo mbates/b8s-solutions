@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client'
 
 import { BrickLogo } from '@/components/ui/BrickLogo'
@@ -16,7 +17,7 @@ export default function LogoConceptsPage() {
             Concept 1: Replace Title with BG Monogram
           </h2>
           <p className="text-gray-500 mb-6">
-            The BG monogram sits above the bricks instead of the "Bates Groundworks" text.
+            The BG monogram sits above the bricks instead of the &quot;Bates Groundworks&quot; text.
           </p>
           <div className="flex justify-center border-t pt-8">
             <div className="inline-flex items-center gap-3">
@@ -188,7 +189,7 @@ export default function LogoConceptsPage() {
             Concept 5: Small Logo Next to Title
           </h2>
           <p className="text-gray-500 mb-6">
-            The BG monogram appears small next to or above the "Bates Groundworks" text.
+            The BG monogram appears small next to or above the &quot;Bates Groundworks&quot; text.
           </p>
           <div className="flex justify-center border-t pt-8">
             <div className="inline-flex items-center gap-3">
@@ -237,7 +238,7 @@ export default function LogoConceptsPage() {
             Concept 5b: Small Logo Above Title
           </h2>
           <p className="text-gray-500 mb-6">
-            The BG monogram appears centered above the "Bates Groundworks" text.
+            The BG monogram appears centered above the &quot;Bates Groundworks&quot; text.
           </p>
           <div className="flex justify-center border-t pt-8">
             <div className="inline-flex items-center gap-3">
