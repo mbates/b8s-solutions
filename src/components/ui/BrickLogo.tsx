@@ -97,15 +97,19 @@ export function BrickLogo({
   const effectRadius = BASE_EFFECT_RADIUS * scale;
 
   // Check sessionStorage on mount to see if animation already played this session
+  // But allow animation on page refresh (F5/Ctrl+F5) for easier testing
   useEffect(() => {
     try {
+      const navEntry = performance.getEntriesByType?.('navigation')?.[0] as PerformanceNavigationTiming | undefined;
+      const isReload = navEntry?.type === 'reload';
+
       const alreadyPlayed = sessionStorage.getItem(ANIMATION_PLAYED_KEY) === 'true';
-      if (alreadyPlayed) {
+      if (alreadyPlayed && !isReload) {
         setAnimationAlreadyPlayed(true);
         setAnimationComplete(true);
       }
     } catch {
-      // sessionStorage not available (SSR or privacy mode)
+      // sessionStorage or performance API not available (SSR or privacy mode)
     }
     setHasLoaded(true);
   }, []);
