@@ -21,32 +21,32 @@ const config: Config = {
       keyframes: {
         'brick-drop': {
           '0%': {
-            transform: 'translateY(-100vh)',
+            transform: 'translateY(-100vh) rotate(var(--brick-rotate, 0deg))',
             opacity: '1',
           },
           '1%': {
             opacity: '1',
           },
           '60%': {
-            transform: 'translateY(0)',
+            transform: 'translateY(0) rotate(calc(var(--brick-rotate, 0deg) * 0.25))',
           },
           '72%': {
-            transform: 'translateY(-12px)',
+            transform: 'translateY(-12px) rotate(calc(var(--brick-rotate, 0deg) * -0.12))',
           },
           '82%': {
-            transform: 'translateY(0)',
+            transform: 'translateY(0) rotate(calc(var(--brick-rotate, 0deg) * 0.06))',
           },
           '88%': {
-            transform: 'translateY(-4px)',
+            transform: 'translateY(-4px) rotate(calc(var(--brick-rotate, 0deg) * -0.03))',
           },
           '94%': {
-            transform: 'translateY(0)',
+            transform: 'translateY(0) rotate(0deg)',
           },
           '97%': {
-            transform: 'translateY(-1px)',
+            transform: 'translateY(-1px) rotate(0deg)',
           },
           '100%': {
-            transform: 'translateY(0)',
+            transform: 'translateY(0) rotate(0deg)',
           },
         },
         'tool-shake': {

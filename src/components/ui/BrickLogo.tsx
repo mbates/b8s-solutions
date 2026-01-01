@@ -48,6 +48,13 @@ const brickStaggerOffsets = [
   0.0, 0.12, 0.05, 0.18, 0.08, 0.1, 0.0, 0.15, 0.06, 0.04, 0.14, 0.0, 0.1, 0.2,
 ];
 
+// Pre-computed rotation angles for each brick (in degrees) - varied for natural look
+const brickRotations = [
+  -12, 8, -6, 10, -9,   // Row 1: 5 bricks
+  7, -11, 5, -8,        // Row 2: 4 bricks
+  -7, 9, -5, 11, -10,   // Row 3: 5 bricks
+];
+
 interface BrickTransform {
   x: number;
   y: number;
@@ -229,6 +236,7 @@ export function BrickLogo({
     const row = getRowForBrick(index);
     const stagger = brickStaggerOffsets[index] || 0;
     const animationDelay = `${row * ROW_DELAY + stagger}s`;
+    const rotation = brickRotations[index] || 0;
 
     let stateClass = 'animate-brick-drop';
     if (animationComplete) {
@@ -247,10 +255,11 @@ export function BrickLogo({
           className={`bg-bates-orange transition-transform duration-300 ease-out ${stateClass}`}
           style={{
             ...brickStyle,
+            '--brick-rotate': `${rotation}deg`,
             transform: animationComplete ? getTransform(index) : undefined,
             animationDelay: !animationComplete ? animationDelay : undefined,
             animationPlayState: hasLoaded ? 'running' : 'paused',
-          }}
+          } as React.CSSProperties}
         />
       </div>
     );
@@ -260,6 +269,7 @@ export function BrickLogo({
     const row = getRowForBrick(index);
     const stagger = brickStaggerOffsets[index] || 0;
     const animationDelay = `${row * ROW_DELAY + stagger}s`;
+    const rotation = brickRotations[index] || 0;
     const nav = navLinks[navIndex];
     // For root path, only match exact. For others, match prefix for sub-pages
     const isActive = nav.href === '/'
@@ -289,10 +299,11 @@ export function BrickLogo({
           className={`${bgClass} cursor-pointer flex items-center justify-center transition-all duration-300 ease-out ${stateClass}`}
           style={{
             ...brickStyle,
+            '--brick-rotate': `${rotation}deg`,
             transform: animationComplete ? getTransform(index) : undefined,
             animationDelay: !animationComplete ? animationDelay : undefined,
             animationPlayState: hasLoaded ? 'running' : 'paused',
-          }}
+          } as React.CSSProperties}
         >
           <span
             className='text-white font-heading font-semibold'
